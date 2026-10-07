@@ -1,0 +1,14 @@
+import React from 'react';
+import { cn } from '@/lib/utils';
+
+export function Label({ className, ...props }) {
+  return (
+    <label
+      className={cn(
+        'text-sm font-medium leading-none text-slate-800 dark:text-slate-200',
+        className,
+      )}
+      {...props}
+    />
+  );
+}
