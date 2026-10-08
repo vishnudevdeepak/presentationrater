@@ -12,6 +12,7 @@ export const analyzePresentationAPI = async ({
   audience = 'General Audience',
   goal = 'Inform',
   slideCount = 10,
+  userId,
   onProgress
 }) => {
   // Simulate progressive analysis stages (0% -> 100%)
@@ -45,8 +46,7 @@ export const analyzePresentationAPI = async ({
   });
 
   // Persist to local storage history
-  savePresentation(analysisResult);
+  await savePresentation(analysisResult, userId);
 
   return analysisResult;
 };
-

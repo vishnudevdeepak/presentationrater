@@ -4,56 +4,94 @@
   :root {
     --bg-main: #f8fafc;
     --card-bg: #ffffff;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
+    --text-primary: #000000;
+    --text-secondary: #000000;
     --border-color: #e2e8f0;
   }
 
   .dark {
-    --bg-main: #0b0f19;
-    --card-bg: #111827;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --border-color: #1e293b;
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #000000;
+    --text-secondary: #000000;
+    --border-color: #e2e8f0;
   }
 
   body {
     background-color: var(--bg-main);
-    color: var(--text-primary);
+    color: #000000;
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
     overflow-x: hidden;
   }
 }
 
-/* Custom Glassmorphism & Effects */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+/* ============================================================
+   UNIVERSAL BLACK FONT OVERRIDE
+   Forces all text to black except intentionally colored elements
+   ============================================================ */
+
+/* 1. Blanket black on all elements */
+*:not([class*="bg-indigo-"]):not([class*="bg-purple-"]):not([class*="bg-rose-"]):not([class*="bg-emerald-"]):not([class*="bg-gradient"]):not(.gradient-text) {
+  color: #000000;
 }
 
-.dark .glass-panel {
-  background: rgba(17, 24, 39, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(30, 41, 59, 0.8);
+/* 2. Restore white text on colored/filled buttons and badges */
+[class*="bg-indigo-"],
+[class*="bg-purple-"],
+[class*="bg-rose-"],
+[class*="bg-emerald-"],
+[class*="bg-green-7"],
+[class*="bg-green-8"],
+[class*="bg-blue-7"],
+[class*="bg-blue-8"],
+[class*="bg-amber-6"],
+[class*="bg-gradient-to"] {
+  color: #ffffff !important;
 }
 
+/* 3. Restore gradient text effect */
 .gradient-text {
   background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #2563eb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent !important;
 }
 
-.dark .gradient-text {
-  background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #60a5fa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/* 4. Icon SVGs inherit from parent element, don't force black independently */
+svg {
+  color: inherit;
 }
 
-/* Custom animations */
+/* 5. Placeholder text */
+::placeholder {
+  color: #6b7280 !important;
+}
+
+/* ============================================================
+   COMPONENT STYLES
+   ============================================================ */
+
+/* Custom Glassmorphism & Effects */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.dark .glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
 @keyframes pulseGlow {
   0%, 100% {
     opacity: 0.6;
@@ -83,7 +121,10 @@
   backface-visibility: hidden;
 }
 
-/* Scrollbar styles */
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -94,7 +135,4 @@
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
-}
-.dark ::-webkit-scrollbar-thumb {
-  background: #334155;
 }

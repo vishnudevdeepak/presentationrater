@@ -11,14 +11,21 @@ export default function History() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
   const [sortBy, setSortBy] = useState('recent');
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    setPresentations(getPresentations());
+    getPresentations()
+      .then(setPresentations)
+      .catch((error) => setErrorMsg(error.message || 'Could not load analysis history.'));
   }, []);
 
-  const handleDelete = (id) => {
-    const updated = deletePresentation(id);
-    setPresentations(updated);
+  const handleDelete = async (id) => {
+    try {
+      const updated = await deletePresentation(id);
+      setPresentations(updated);
+    } catch (error) {
+      setErrorMsg(error.message || 'Could not delete this presentation.');
+    }
   };
 
   const handleAnalyzeAgain = () => {
@@ -72,6 +79,12 @@ export default function History() {
           <Plus className="w-4 h-4" /> Analyze New Presentation
         </Link>
       </div>
+
+      {errorMsg && (
+        <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-medium text-rose-700">
+          {errorMsg}
+        </div>
+      )}
 
       {/* Search, Filter & Sort Controls */}
       <div className="glass-panel p-4 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">

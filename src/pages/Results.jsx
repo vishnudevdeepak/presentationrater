@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import {
   Download,
   Share2,
@@ -9,7 +9,6 @@ import {
   Target,
   FileText,
   CheckCircle2,
-  AlertTriangle,
   ArrowLeft,
   Sparkles,
   BarChart2,
@@ -18,7 +17,7 @@ import {
 } from 'lucide-react';
 import ScoreCircle from '../components/ScoreCircle';
 import CategoryScore from '../components/CategoryScore';
-import { CategoryRadarChart, CategoryBarChart } from '../components/Charts';
+import { CategoryRadarChart } from '../components/Charts';
 import HealthMeter from '../components/HealthMeter';
 import StrengthCard from '../components/StrengthCard';
 import WeaknessCard from '../components/WeaknessCard';
@@ -31,9 +30,9 @@ import { CATEGORY_DEFINITIONS } from '../data/categories';
 
 export default function Results() {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const [presentation, setPresentation] = useState(null);
+  const [loadError, setLoadError] = useState('');
   const [selectedSlideIndex, setSelectedSlideIndex] = useState(0);
   const [completedRecs, setCompletedRecs] = useState({});
 
@@ -44,27 +43,42 @@ export default function Results() {
   const [downloadSuccessMsg, setDownloadSuccessMsg] = useState(null);
 
   useEffect(() => {
-    const data = getPresentationById(id);
-    if (data) {
-      setPresentation(data);
-    }
+    let isMounted = true;
+    getPresentationById(id)
+      .then((data) => {
+        if (isMounted) {
+          setPresentation(data);
+          setLoadError('');
+        }
+      })
+      .catch((error) => {
+        if (isMounted) {
+          setPresentation(null);
+          setLoadError(error.message || 'Could not load this analysis.');
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   if (!presentation) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-4">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-          Presentation Analysis Not Found
+          {loadError ? 'Unable to Load Analysis' : 'Loading Analysis...'}
         </h2>
-        <p className="text-slate-500 text-sm">
-          We couldn't find an analysis report matching ID: <code className="font-mono text-indigo-600">{id}</code>
-        </p>
-        <Link
-          to="/analyze"
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700"
-        >
-          <ArrowLeft className="w-4 h-4" /> Go to Analyze
-        </Link>
+        {loadError && (
+          <>
+            <p role="alert" className="text-slate-500 text-sm">{loadError}</p>
+            <Link
+              to="/history"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700"
+            >
+              <ArrowLeft className="w-4 h-4" /> Go to History
+            </Link>
+          </>
+        )}
       </div>
     );
   }
@@ -391,4 +405,3 @@ export default function Results() {
     </div>
   );
 }
-

@@ -7,7 +7,6 @@ import {
   NavItems,
   MobileNav,
   NavbarLogo,
-  NavbarButton,
   MobileNavHeader,
   MobileNavToggle,
   MobileNavMenu,
@@ -20,6 +19,8 @@ export default function Navbar({ userAuth }) {
   const navItems = [
     { name: "Home", link: "/" },
     { name: "Analyze", link: "/analyze" },
+    { name: "Examples", link: "/examples" },
+    { name: "Pricing", link: "/pricing" },
     ...(userAuth?.isLoggedIn
       ? [
           { name: "Dashboard", link: "/dashboard" },
@@ -36,7 +37,7 @@ export default function Navbar({ userAuth }) {
         <NavItems items={navItems} />
 
         <div className="flex items-center gap-3">
-          {userAuth?.isLoggedIn ? (
+          {userAuth?.isLoggedIn && (
             <div className="flex items-center gap-3">
               <Link
                 to="/profile"
@@ -48,20 +49,10 @@ export default function Navbar({ userAuth }) {
                   alt="Profile"
                   className="w-8 h-8 rounded-full object-cover ring-2 ring-indigo-500/30"
                 />
-                <span className="text-xs font-bold text-slate-700 dark:text-slate-200 pr-1 group-hover:text-indigo-600">
+                <span className="text-xs font-bold text-black pr-1 group-hover:text-indigo-600">
                   {userAuth.user?.name?.split(' ')[0]}
                 </span>
               </Link>
-
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <NavbarButton variant="secondary" to="/login">
-                Login
-              </NavbarButton>
-              <NavbarButton variant="primary" to="/signup">
-                Get Started
-              </NavbarButton>
             </div>
           )}
         </div>
@@ -86,8 +77,8 @@ export default function Navbar({ userAuth }) {
                 onClick={() => setIsMobileMenuOpen(false)}
                 className={`py-2 text-base font-semibold transition-colors ${
                   location.pathname === item.link
-                    ? 'text-indigo-600 dark:text-indigo-400 font-bold'
-                    : 'text-slate-700 dark:text-slate-200'
+                    ? 'text-indigo-600 font-bold'
+                    : 'text-black'
                 }`}
               >
                 {item.name}
@@ -95,37 +86,16 @@ export default function Navbar({ userAuth }) {
             ))}
           </div>
 
-          <div className="flex w-full flex-col gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
-            {userAuth?.isLoggedIn ? (
-              <>
-                <Link
-                  to="/profile"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-2 py-2 text-base font-semibold text-slate-800 dark:text-slate-200"
-                >
-                  <User className="w-5 h-5 text-indigo-500" />
-                  Profile ({userAuth.user?.name})
-                </Link>
-              </>
-            ) : (
-              <>
-                <NavbarButton
-                  to="/login"
-                  variant="secondary"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full text-center py-2.5"
-                >
-                  Login
-                </NavbarButton>
-                <NavbarButton
-                  to="/signup"
-                  variant="primary"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full text-center py-2.5"
-                >
-                  Get Started
-                </NavbarButton>
-              </>
+          <div className="flex w-full flex-col gap-2 pt-2 border-t border-slate-200">
+            {userAuth?.isLoggedIn && (
+              <Link
+                to="/profile"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2 py-2 text-base font-semibold text-black"
+              >
+                <User className="w-5 h-5 text-indigo-500" />
+                Profile ({userAuth.user?.name})
+              </Link>
             )}
           </div>
         </MobileNavMenu>

@@ -16,17 +16,24 @@ export default function Dashboard({ userAuth }) {
   const navigate = useNavigate();
   const [presentations, setPresentations] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
-    setPresentations(getPresentations());
+    getPresentations()
+      .then(setPresentations)
+      .catch((error) => setErrorMsg(error.message || 'Could not load presentations.'));
   }, []);
 
-  const handleDelete = (id) => {
-    const updated = deletePresentation(id);
-    setPresentations(updated);
+  const handleDelete = async (id) => {
+    try {
+      const updated = await deletePresentation(id);
+      setPresentations(updated);
+    } catch (error) {
+      setErrorMsg(error.message || 'Could not delete this presentation.');
+    }
   };
 
-  const handleAnalyzeAgain = (p) => {
+  const handleAnalyzeAgain = () => {
     navigate('/analyze');
   };
 
@@ -65,6 +72,12 @@ export default function Dashboard({ userAuth }) {
           <Plus className="w-5 h-5" /> Analyze Presentation
         </Link>
       </div>
+
+      {errorMsg && (
+        <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-medium text-rose-700">
+          {errorMsg}
+        </div>
+      )}
 
       {/* Summary Stat Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

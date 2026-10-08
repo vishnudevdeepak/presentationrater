@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, ArrowRight, Layers, Award, FileText } from 'lucide-react';
+import { Sparkles, ArrowRight } from 'lucide-react';
 import { EXAMPLE_TEMPLATES } from '../data/templates';
 import { getRatingInfo } from '../utils/scoreUtils';
 

@@ -10,8 +10,9 @@ export default function Signup({ setUserAuth }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     setErrorMsg(null);
 
@@ -25,12 +26,15 @@ export default function Signup({ setUserAuth }) {
       return;
     }
 
+    setIsSubmitting(true);
     try {
-      const session = performSignup({ name, email, password });
+      const session = await performSignup({ name, email, password });
       if (setUserAuth) setUserAuth(session);
       navigate('/dashboard');
     } catch (err) {
       setErrorMsg(err.message || 'Failed to create account.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -132,9 +136,10 @@ export default function Signup({ setUserAuth }) {
 
           <button
             type="submit"
-            className="w-full py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-500/20 text-xs transition-all"
+            disabled={isSubmitting}
+            className="w-full py-3 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 shadow-md shadow-indigo-500/20 text-xs transition-all disabled:opacity-60"
           >
-            Create Account
+            {isSubmitting ? 'Creating account...' : 'Create Account'}
           </button>
         </form>
 

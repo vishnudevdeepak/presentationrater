@@ -6,7 +6,7 @@ export const runMockAnalysis = ({
   audience = 'General Audience',
   goal = 'Inform',
   slideCount = 10,
-  fileSize = 4200000
+  _fileSize = 4200000
 }) => {
   // Deterministic seed generation based on file string to keep scoring consistent for same file
   let hash = 0;

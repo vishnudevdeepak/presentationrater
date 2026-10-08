@@ -62,7 +62,7 @@ export function NavItems({ items = [], className = '', onItemClick }) {
     <motion.div
       onMouseLeave={() => setHovered(null)}
       className={cn(
-        'absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-zinc-600 transition duration-200 hover:text-zinc-800 lg:flex lg:space-x-2',
+        'absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-semibold text-black transition duration-200 hover:text-black lg:flex lg:space-x-2',
         className,
       )}
     >
@@ -80,17 +80,17 @@ export function NavItems({ items = [], className = '', onItemClick }) {
             className={cn(
               'relative px-4 py-2 transition-colors',
               isActive
-                ? 'text-indigo-600 dark:text-indigo-400 font-bold'
-                : 'text-neutral-600 dark:text-neutral-300',
+                ? 'text-indigo-600 font-black'
+                : 'text-black font-semibold hover:text-black',
             )}
           >
             {hovered === idx && (
               <motion.div
                 layoutId="hovered"
-                className="absolute inset-0 h-full w-full rounded-full bg-gray-100 dark:bg-neutral-800"
+                className="absolute inset-0 h-full w-full rounded-full bg-slate-100"
               />
             )}
-            <span className="relative z-20">{item.name}</span>
+            <span className="relative z-20 text-black">{item.name}</span>
           </Link>
         );
       })}
@@ -132,7 +132,7 @@ export function MobileNavHeader({ children, className = '' }) {
   );
 }
 
-export function MobileNavMenu({ children, className = '', isOpen, onClose }) {
+export function MobileNavMenu({ children, className = '', isOpen, onClose: _onClose }) {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -210,7 +210,7 @@ export function NavbarButton({
     primary:
       'shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset] bg-indigo-600 text-white hover:bg-indigo-700',
     secondary:
-      'bg-transparent shadow-none text-slate-700 hover:bg-slate-100 dark:text-white dark:hover:bg-slate-800',
+      'bg-transparent shadow-none text-black font-bold hover:bg-slate-100 hover:text-black',
     dark: 'bg-black text-white shadow-[0_0_24px_rgba(34,_42,_53,_0.06),_0_1px_1px_rgba(0,_0,_0,_0.05),_0_0_0_1px_rgba(34,_42,_53,_0.04),_0_0_4px_rgba(34,_42,_53,_0.08),_0_16px_68px_rgba(47,_48,_55,_0.05),_0_1px_0_rgba(255,_255,_255,_0.1)_inset]',
     gradient:
       'bg-gradient-to-b from-blue-500 to-blue-700 text-white shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset]',

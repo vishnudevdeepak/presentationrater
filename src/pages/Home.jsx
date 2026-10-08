@@ -26,10 +26,8 @@ export default function Home() {
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl -z-10 pointer-events-none" />
 
-      {/* Pill Badge */}
-      <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider mb-8">
-        <Sparkles className="w-4 h-4" /> SlideScore AI — Presentation Evaluator
-      </div>
+
+
 
       {/* Center Text Flipping Board */}
       <div className="w-full flex justify-center mb-8">
@@ -37,7 +35,7 @@ export default function Home() {
       </div>
 
       {/* Simple Subtitle */}
-      <p className="text-base sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed font-medium mb-10">
+      <p className="text-base sm:text-xl text-black max-w-2xl mx-auto leading-relaxed font-semibold mb-10">
         Upload your presentation file and get an instant AI score, slide-by-slide feedback, and actionable design recommendations.
       </p>
 
@@ -52,7 +50,7 @@ export default function Home() {
       </div>
 
       {/* Trust Badges */}
-      <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 dark:text-slate-400 font-semibold">
+      <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-black font-bold">
         <span className="flex items-center gap-1.5">
           <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Free instant analysis
         </span>

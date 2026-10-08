@@ -6,7 +6,7 @@ import UploadBox from '../components/UploadBox';
 import AnalysisLoader from '../components/AnalysisLoader';
 import { analyzePresentationAPI } from '../services/aiService';
 
-export default function Analyze() {
+export default function Analyze({ userAuth }) {
   const navigate = useNavigate();
 
   const [selectedType, setSelectedType] = useState('general');
@@ -19,12 +19,14 @@ export default function Analyze() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisProgress, setAnalysisProgress] = useState(0);
   const [currentProgressStep, setCurrentProgressStep] = useState('Preparing analysis...');
+  const [analysisError, setAnalysisError] = useState('');
 
   const handleStartAnalysis = async () => {
     if (!selectedFile) return;
 
     setIsAnalyzing(true);
     setAnalysisProgress(0);
+    setAnalysisError('');
 
     const finalAudience = selectedAudience === 'Custom Audience' && customAudience.trim()
       ? customAudience.trim()
@@ -37,6 +39,7 @@ export default function Analyze() {
         audience: finalAudience,
         goal: selectedGoal,
         slideCount: selectedFile.slidesCount || 10,
+        userId: userAuth?.user?.id,
         onProgress: (stage) => {
           setAnalysisProgress(stage.progress);
           setCurrentProgressStep(stage.label);
@@ -47,6 +50,7 @@ export default function Analyze() {
       navigate(`/results/${result.id}`);
     } catch (error) {
       console.error('Analysis failed:', error);
+      setAnalysisError(error.message || 'Analysis failed. Please try again.');
       setIsAnalyzing(false);
     }
   };
@@ -71,6 +75,12 @@ export default function Analyze() {
           Upload your presentation and get detailed AI feedback across 10 category metrics and individual slide cards.
         </p>
       </div>
+
+      {analysisError && (
+        <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-medium text-rose-700">
+          {analysisError}
+        </div>
+      )}
 
       {/* Step 1: Presentation Type Selection */}
       <div className="space-y-4">
@@ -216,4 +226,3 @@ export default function Analyze() {
     </div>
   );
 }
-

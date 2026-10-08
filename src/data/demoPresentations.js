@@ -268,7 +268,7 @@ export const INITIAL_DEMO_PRESENTATIONS = [
     ],
     slides: [
       { slideNumber: 1, score: 96, title: 'PayPulse - NextGen B2B Payments', status: 'Outstanding', mainMessage: 'Eliminating cross-border settlement latency for global enterprises.', breakdown: { content: 15, design: 15, readability: 9, typography: 8, visuals: 8, clarity: 10, consistency: 7 }, problems: [], recommendations: ['Flawless title presentation.'] },
-      { slideNumber: 2, score: 94, title: 'The \$50B Inefficiency Problem', status: 'Outstanding', mainMessage: 'Traditional wire transfers cost 3.2% in fees and take 3 days to settle.', breakdown: { content: 15, design: 14, readability: 9, typography: 7, visuals: 8, clarity: 9, consistency: 7 }, problems: [], recommendations: ['Strong emotional hook.'] }
+      { slideNumber: 2, score: 94, title: 'The $50B Inefficiency Problem', status: 'Outstanding', mainMessage: 'Traditional wire transfers cost 3.2% in fees and take 3 days to settle.', breakdown: { content: 15, design: 14, readability: 9, typography: 7, visuals: 8, clarity: 9, consistency: 7 }, problems: [], recommendations: ['Strong emotional hook.'] }
     ]
   },
   {

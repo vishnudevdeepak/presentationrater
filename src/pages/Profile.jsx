@@ -1,37 +1,64 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, Save, Check, LogOut } from 'lucide-react';
 import { getPresentations, updateProfile, performLogout } from '../services/storageService';
 
 export default function Profile({ userAuth, setUserAuth }) {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState(userAuth?.user?.name || 'Alex Morgan');
-  const [userEmail, setUserEmail] = useState(userAuth?.user?.email || 'alex.morgan@slidescore.ai');
+  const authName = userAuth?.user?.name || '';
+  const authEmail = userAuth?.user?.email || '';
+  const [userName, setUserName] = useState(authName);
+  const [userEmail, setUserEmail] = useState(authEmail);
+  const [prevAuth, setPrevAuth] = useState({ name: authName, email: authEmail });
   const [savedSuccess, setSavedSuccess] = useState(false);
+  const [presentations, setPresentations] = useState([]);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
-  const presentations = getPresentations(userAuth?.user?.id);
+  if (prevAuth.name !== authName || prevAuth.email !== authEmail) {
+    setPrevAuth({ name: authName, email: authEmail });
+    setUserName(authName);
+    setUserEmail(authEmail);
+  }
+
+  useEffect(() => {
+    getPresentations()
+      .then(setPresentations)
+      .catch((error) => setErrorMsg(error.message || 'Could not load account data.'));
+  }, []);
+
   const totalPresentations = presentations.length;
   const avgScore = totalPresentations > 0
     ? Math.round(presentations.reduce((acc, p) => acc + p.overallScore, 0) / totalPresentations)
     : 0;
 
-  const handleSaveProfile = (e) => {
+  const handleSaveProfile = async (e) => {
     e.preventDefault();
-    if (userAuth?.user?.id) {
-      const updatedSession = updateProfile(userAuth.user.id, {
+    setErrorMsg('');
+    setIsSaving(true);
+    try {
+      const updatedSession = await updateProfile(userAuth.user.id, {
         name: userName,
         email: userEmail
       });
       if (setUserAuth) setUserAuth(updatedSession);
+      setSavedSuccess(true);
+      setTimeout(() => setSavedSuccess(false), 2500);
+    } catch (error) {
+      setErrorMsg(error.message || 'Could not save profile changes.');
+    } finally {
+      setIsSaving(false);
     }
-    setSavedSuccess(true);
-    setTimeout(() => setSavedSuccess(false), 2500);
   };
 
-  const handleLogout = () => {
-    const emptySession = performLogout();
-    if (setUserAuth) setUserAuth(emptySession);
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      const emptySession = await performLogout();
+      if (setUserAuth) setUserAuth(emptySession);
+      navigate('/login');
+    } catch (error) {
+      setErrorMsg(error.message || 'Could not log out.');
+    }
   };
 
   return (
@@ -55,6 +82,12 @@ export default function Profile({ userAuth, setUserAuth }) {
           <LogOut className="w-4 h-4" /> Log Out of Account
         </button>
       </div>
+
+      {errorMsg && (
+        <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-medium text-rose-700">
+          {errorMsg}
+        </div>
+      )}
 
       {/* User Overview Card */}
       <div className="glass-panel p-6 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6">
@@ -146,9 +179,10 @@ export default function Profile({ userAuth, setUserAuth }) {
 
             <button
               type="submit"
-              className="px-4 py-2 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 text-xs shadow-sm flex items-center gap-1.5 transition-all"
+              disabled={isSaving}
+              className="px-4 py-2 rounded-xl font-bold text-white bg-indigo-600 hover:bg-indigo-700 text-xs shadow-sm flex items-center gap-1.5 transition-all disabled:opacity-60"
             >
-              <Save className="w-4 h-4" /> Save Changes
+              <Save className="w-4 h-4" /> {isSaving ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>

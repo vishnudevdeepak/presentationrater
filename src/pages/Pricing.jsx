@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Check, Sparkles, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { Check, Sparkles, ShieldCheck } from 'lucide-react';
 import Modal from '../components/Modal';
 
 export default function Pricing() {
