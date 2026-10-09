@@ -25,7 +25,8 @@ app.use(cors({
   origin(origin, callback) {
     if (!origin ||
         configuredOrigins.includes(origin) ||
-        /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+        /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin) ||
+        /\.vercel\.app$/.test(origin)) {
       callback(null, true);
       return;
     }
