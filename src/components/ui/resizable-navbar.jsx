@@ -204,7 +204,7 @@ export function NavbarButton({
   ...props
 }) {
   const baseStyles =
-    'inline-flex items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-bold text-black transition duration-200 hover:-translate-y-0.5';
+    'inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-bold transition duration-200 hover:-translate-y-0.5';
 
   const variantStyles = {
     primary:

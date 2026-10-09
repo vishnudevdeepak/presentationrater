@@ -9,11 +9,9 @@ import Home from './pages/Home';
 import Analyze from './pages/Analyze';
 import Results from './pages/Results';
 import Dashboard from './pages/Dashboard';
-import History from './pages/History';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Profile from './pages/Profile';
-import Pricing from './pages/Pricing';
 import Examples from './pages/Examples';
 
 import {
@@ -54,13 +52,11 @@ export default function App() {
 
         <main className="flex-grow">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<RequireAuth userAuth={userAuth}><Home /></RequireAuth>} />
             <Route path="/analyze" element={<RequireAuth userAuth={userAuth}><Analyze userAuth={userAuth} /></RequireAuth>} />
             <Route path="/results/:id" element={<RequireAuth userAuth={userAuth}><Results /></RequireAuth>} />
             <Route path="/dashboard" element={<RequireAuth userAuth={userAuth}><Dashboard userAuth={userAuth} /></RequireAuth>} />
-            <Route path="/history" element={<RequireAuth userAuth={userAuth}><History /></RequireAuth>} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/examples" element={<Examples />} />
+            <Route path="/examples" element={<RequireAuth userAuth={userAuth}><Examples /></RequireAuth>} />
             <Route path="/login" element={<Login setUserAuth={setUserAuth} />} />
             <Route path="/signup" element={<Signup setUserAuth={setUserAuth} />} />
             <Route
