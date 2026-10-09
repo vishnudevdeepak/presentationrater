@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
+    "build": "echo 'Backend has no build step'",
     "dev": "node --watch server.js"
   },
   "dependencies": {
